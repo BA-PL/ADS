@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="P_Server" Id="{a4f2cabe-2b2c-431d-982b-ef74e1715aad}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_Server
+VAR
+	sVar1_Read			AT%MB0		: STRING:='Beckhoff'; 	// zmienna do odczytu po adresie
+	sVar1_Write			AT%MB100	: STRING;				// zmienna do zapisu po adresie
+	
+	sVar2_Read						: STRING:='TwinCAT';	// zmienna do odczytu po nazwie
+	sVar2_Write						: STRING;				// zmienna do zapisu po nazwie 
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

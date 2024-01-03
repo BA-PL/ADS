@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4024.12">
+  <POU Name="P_Client" Id="{ecf98284-c10f-4069-9751-0a464747cfd1}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM P_Client
+VAR
+	//odczyt po adresie
+	fbRead_Address			: ADSREAD;  
+	sVarRead_Address		: STRING;					// zmienna przechowująca odczytane dane 
+	bRead1					: BOOL;
+	//zapis po adresie 
+	fbWrite_Address			: ADSWRITE;
+	sVarWrite_Address		: STRING:='Automation'; 	//zmienna przechowująca dane do wysłania 
+	bWrite1					: BOOL;
+	//odczyt po nazwie
+	fbRead_Symbol			: FB_ReadAdsSymByName;
+	bRead2					: BOOL;
+	sVarRead_Symbol			: STRING;					// zmienna przechowująca odczytane dane 
+	//zapis po nazwie 
+	fbWrite_Symbol			: FB_WriteAdsSymByName;
+	sVarWrite_Symbol		: STRING:='EtherCAT'; 		// zmienna przechowująca dane do wysłania 
+	bWrite2					: BOOL;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[fbRead_Address(
+	NETID:='' , 
+	PORT:=851 , 
+	IDXGRP:=16#4020 , 	// 16#4020 odnosi się do adresacji %MB
+	IDXOFFS:=0 , 		// offset wynika z adresu, np. %MB0 --> offset 0
+	LEN:=SIZEOF(sVarRead_Address) , 
+	DESTADDR:=ADR(sVarRead_Address) , 
+	READ:=bRead1 , 
+	TMOUT:= , 
+	BUSY=> , 
+	ERR=> , 
+	ERRID=> );
+	
+fbWrite_Address(
+	NETID:='' , 
+	PORT:=851 , 
+	IDXGRP:=16#4020 , // 16#4020 odnosi się do adresacji %MB
+	IDXOFFS:=100 ,    // offset wynika z adresu, np. %MB100 --> offset 100
+	LEN:=SIZEOF(sVarWrite_Address) , 
+	SRCADDR:=ADR(sVarWrite_Address) , 
+	WRITE:=bWrite1 , 
+	TMOUT:= , 
+	BUSY=> , 
+	ERR=> , 
+	ERRID=> );
+	
+fbRead_Symbol(
+	bRead:=bRead2 , 
+	sNetId:='' , 
+	nPort:=851 , 
+	sVarName:='P_Server.sVar2_Read' , 
+	nDestAddr:=ADR(sVarRead_Symbol) , 
+	nLen:=SIZEOF(sVarRead_Symbol) , 
+	tTimeout:= , 
+	eComMode:= , 
+	bClearOnError:= , 
+	bBusy=> , 
+	bError=> , 
+	nErrorId=> );
+	
+fbWrite_Symbol(
+	bWrite:=bWrite2 , 
+	sNetId:='' , 
+	nPort:=851 , 
+	sVarName:='P_Server.sVar2_Write' , 
+	nSrcAddr:= ADR(sVarWrite_Symbol), 
+	nLen:=SIZEOF(sVarWrite_Symbol) , 
+	tTimeout:= , 
+	eComMode:= , 
+	bBusy=> , 
+	bError=> , 
+	nErrorId=> );]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>
